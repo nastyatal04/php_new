@@ -3,6 +3,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .wrapper-from-table {
+            display: flex;
+            gap: 40px;
+        }
+    </style>
 </head>
 <body>
     <form action="" method="post">
@@ -22,6 +28,9 @@
         <input type="text" name="phone2"><br/>
         <br/>
         <input type="submit">
+    </form>
+    <form action="" method="post">
+        <input type="submit" name="btnDelete" value="Очистить сессию">
     </form>
 </body>
 </html>
@@ -47,18 +56,42 @@
             $callback = ['name' => $name2, 'phone' => $phone2];
             $_SESSION['formData']['form2Data'][] = $callback;
         }
+        //очистка сессий 
+        if (isset($_POST['btnDelete'])) {
+            session_destroy();
+        }
     }
-    // вывод данных из 1 формы 
-    if(isset($_SESSION['formData']['form1Data'])){
-        echo 'данные из первой формы: ';
-        print_r($_SESSION['formData']['form1Data']);
-        echo '<br>';
+    echo "<div class='wrapper-from-table'>";
+    if(isset($_SESSION['formData']['form2Data'])) {
+        echo "<table>";
+        echo "<tr><th>Вторая форма</th></tr>";
+        echo "<tr><th>Имя</th><th>Телефон</th></tr>";
+        for($i=0; $i<count($_SESSION['formData']['form2Data']); ++$i) {
+            echo "<tr><td>".$_SESSION['formData']['form2Data'][$i]['name']."</td><td>".$_SESSION['formData']['form2Data'][$i]['phone']."</td></tr>";
+        }
+        echo "</table>";
     }
-    // вывод данных из 2 формы 
-    if(isset($_SESSION['formData']['form2Data'])){
-        echo 'данные из второй формы: ';
-        print_r($_SESSION['formData']['form2Data']);
-        echo '<br>';
-    } 
+    if(isset($_SESSION['formData']['form1Data'])) {
+        echo "<table>";
+        echo "<tr><th>Первая форма</th></tr>";
+        echo "<tr><th>Имя</th><th>Телефон</th><th>Отзыв</th></tr>";
+        for($i=0; $i<count($_SESSION['formData']['form1Data']); ++$i) {
+            echo "<tr><td>".$_SESSION['formData']['form1Data'][$i]['name']."</td><td>".$_SESSION['formData']['form1Data'][$i]['phone']."</td><td>".$_SESSION['formData']['form1Data'][$i]['feedback']."</td></tr>";
+        }
+        echo "</table>";
+    }
+    echo "</div>";
+    // // вывод данных из 1 формы 
+    // if(isset($_SESSION['formData']['form1Data'])){
+    //     echo 'данные из первой формы: ';
+    //     print_r($_SESSION['formData']['form1Data']);
+    //     echo '<br>';
+    // }
+    // // вывод данных из 2 формы 
+    // if(isset($_SESSION['formData']['form2Data'])){
+    //     echo 'данные из второй формы: ';
+    //     print_r($_SESSION['formData']['form2Data']);
+    //     echo '<br>';
+    // } 
 
 ?>
